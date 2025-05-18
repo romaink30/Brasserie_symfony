@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier la réservation{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <h1>Modifier la réservation</h1>
+
+    <form method="post" action="{{ path('reservation_edit', {'id': reservation.id}) }}">
+        <div class="mb-3">
+            <label  style="color:rgb(195, 137, 65)" for="user_id" class="form-label">ID Utilisateur</label>
+            <input type="text" name="user_id" id="user_id" class="form-control" value="{{ reservation.user_id }}" required>
+        </div>
+
+        <div class="mb-3">
+            <label  style="color:rgb(195, 137, 65)" for="product_id" class="form-label">ID Produit</label>
+            <input type="text" name="product_id" id="product_id" class="form-control" value="{{ reservation.product_id }}" required>
+        </div>
+
+        <div class="mb-3">
+            <label  style="color:rgb(195, 137, 65)" for="quantity" class="form-label">Quantité</label>
+            <input type="number" name="quantity" id="quantity" class="form-control" value="{{ reservation.quantity }}" required>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Enregistrer</button>
+        <a href="{{ path('reservation_index') }}" class="btn btn-secondary">Annuler</a>
+    </form>
+</div>
+{% endblock %}

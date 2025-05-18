@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Connexion Admin{% endblock %}
+
+{% block body %}
+    <h1>Connexion Administrateur</h1>
+
+    {% if error %}
+        <div style="color:red;">{{ error }}</div>
+    {% endif %}
+
+    <form method="post">
+        <label style="color:rgb(195, 137, 65);">Email</label><br>
+        <input type="email" name="email" required><br><br>
+
+        <label style="color:rgb(195, 137, 65);">Mot de passe</label><br>
+        <input type="password" name="password" required><br><br>
+
+        <button type="submit">Connexion</button>
+    </form>
+{% endblock %}

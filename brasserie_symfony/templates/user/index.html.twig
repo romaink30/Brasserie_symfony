@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Utilisateurs{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <h1 class="mb-4">Liste des utilisateurs</h1>
+    
+    <a href="{{ path('user_create') }}" class="btn btn-success mb-3">Ajouter un utilisateur</a>
+
+    <table class="table table-bordered table-striped">
+        <thead class="table-dark">
+            <tr>
+                <th>ID</th>
+                <th>Email</th>
+                <th>Status</th>
+                <th>Date d'inscription</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+                <tr>
+                    <td>{{ user.id }}</td>
+                    <td>{{ user.email }}</td>
+                    <td><span class="badge bg-success">{{ user.role ?? 'Utilisateur' }}</span></td>
+                    <td>{{ user.created_at | date('Y-m-d') }}</td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="5" class="text-center">Aucun utilisateur trouvé</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

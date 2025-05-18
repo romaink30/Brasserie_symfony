@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouvelle réservation{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <h1>Créer une réservation</h1>
+
+    <form method="post" action="{{ path('reservation_new') }}">
+        <div class="mb-3">
+            <label  style="color:rgb(195, 137, 65)" for="user_id" class="form-label">ID Utilisateur</label>
+            <input type="text" name="user_id" id="user_id" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+            <label style="color:rgb(195, 137, 65)" for="product_id" class="form-label">ID Produit</label>
+            <input type="text" name="product_id" id="product_id" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+            <label style="color:rgb(195, 137, 65)" for="quantity" class="form-label">Quantité</label>
+            <input type="number" name="quantity" id="quantity" class="form-control" required>
+        </div>
+
+        <button style="color:rgb(195, 137, 65)" type="submit" class="btn btn-success">Créer</button>
+        <a href="{{ path('reservation_index') }}" class="btn btn-secondary">Retour</a>
+    </form>
+</div>
+{% endblock %}

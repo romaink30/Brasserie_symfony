@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Créer un produit{% endblock %}
+
+{% block body %}
+<h1>Créer un produit</h1>
+
+<form method="post" action="{{ path('product_new') }}">
+    <div class="mb-3">
+        <label style="color:rgb(195, 137, 65); for="id" class="form-label">ID</label>
+        <input type="text" id="id" name="id" class="form-control" required>
+    </div>
+    <div class="mb-3">
+        <label  style="color:rgb(195, 137, 65); for="name" class="form-label">Nom</label>
+        <input type="text" id="name" name="name" class="form-control" required>
+    </div>
+    <div class="mb-3">
+        <label style="color:rgb(195, 137, 65); for="description" class="form-label">Description</label>
+        <textarea id="description" name="description" class="form-control"></textarea>
+    </div>
+    <div class="mb-3">
+        <label style="color:rgb(195, 137, 65); for="price" class="form-label">Prix</label>
+        <input type="number" step="0.01" id="price" name="price" class="form-control" required>
+    </div>
+
+    <button type="submit" class="btn btn-success">Créer</button>
+    <a href="{{ path('product_index') }}" class="btn btn-secondary">Retour</a>
+</form>
+{% endblock %}

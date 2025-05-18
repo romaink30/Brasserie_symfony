@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Réservations{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <h1 class="mb-4">Liste des Réservations</h1>
+
+    <a href="{{ path('reservation_new') }}" class="btn btn-success mb-3">Nouvelle Réservation</a>
+
+    {% if reservations is not empty %}
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Utilisateur</th>
+                    <th>Produit</th>
+                    <th>Date</th>
+                    <th>Quantité</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for reservation in reservations %}
+                    <tr>
+                        <td>{{ reservation.id }}</td>
+                        <td>{{ reservation.user_id }}</td>
+                        <td>{{ reservation.product_id }}</td>
+                        <td>{{ reservation.created_at|date('d/m/Y H:i') }}</td>
+                        <td>{{ reservation.quantity }}</td>
+                        <td>
+                            <a href="{{ path('reservation_edit', { id: reservation.id }) }}" class="btn btn-sm btn-primary">Modifier</a>
+                            <form method="post" action="{{ path('reservation_delete', { id: reservation.id }) }}" style="display:inline-block;" onsubmit="return confirm('Supprimer cette réservation ?');">
+                                <input type="hidden" name="_method" value="DELETE">
+                                <button class="btn btn-sm btn-danger">Supprimer</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>Aucune réservation trouvée.</p>
+    {% endif %}
+</div>
+{% endblock %}
