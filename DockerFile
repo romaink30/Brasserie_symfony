@@ -1,0 +1,28 @@
+# Utilise une image officielle PHP avec Apache
+FROM php:8.2-apache
+
+# Active les modules Apache et PHP nécessaires
+RUN docker-php-ext-install pdo pdo_mysql && \
+    a2enmod rewrite
+
+# Copie des fichiers de configuration personnalisés si besoin
+# COPY apache-vhost.conf /etc/apache2/sites-available/000-default.conf
+
+# Installer Composer
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
+
+# Définir le répertoire de travail
+WORKDIR /var/www/html
+
+# Copier les fichiers du projet
+COPY . .
+
+# Donner les bons droits
+RUN chown -R www-data:www-data /var/www/html \
+    && chmod -R 755 /var/www/html/var
+
+# Exposer le port 80
+EXPOSE 80
+
+# Lancer Apache en mode foreground
+CMD ["apache2-foreground"]
