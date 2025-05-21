@@ -5,22 +5,19 @@ FROM php:8.2-apache
 RUN docker-php-ext-install pdo pdo_mysql && \
     a2enmod rewrite
 
-# Copie des fichiers de configuration personnalisés si besoin
-# COPY apache-vhost.conf /etc/apache2/sites-available/000-default.conf
-
 # Installer Composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
-# Définir le répertoire de travail
-WORKDIR /var/www/html
+# Définir le répertoire de travail dans le bon sous-dossier
+WORKDIR /var/www/html/brasserie_symfony
 
-# Copier les fichiers du projet
-COPY . .
+# Copier les fichiers du projet Symfony (situés dans brasserie_symfony)
+COPY brasserie_symfony/ /var/www/html/brasserie_symfony/
 
 # Donner les bons droits
-RUN mkdir -p /var/www/html/var && \
-    chown -R www-data:www-data /var/www/html && \
-    chmod -R 755 /var/www/html/var
+RUN mkdir -p var && \
+    chown -R www-data:www-data . && \
+    chmod -R 755 var
 
 # Exposer le port 80
 EXPOSE 80
