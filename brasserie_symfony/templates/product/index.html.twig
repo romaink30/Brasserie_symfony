@@ -12,6 +12,7 @@
             <th>Nom</th>
             <th>Description</th>
             <th>Prix</th>
+            <th>Stock</th>
             <th>Actions</th>
         </tr>
     </thead>
@@ -26,6 +27,7 @@
                 <td>{{ product.name }}</td>
                 <td>{{ product.description }}</td>
                 <td>{{ product.price }} €</td>
+                <td>{{ product.stock }}</td>
                 <td class="actions-column">
                     <a href="{{ path('product_edit', {'id': product.id}) }}" class="btn btn-primary btn-sm">Modifier</a>
 

@@ -181,7 +181,7 @@ public function updateProduct(string $id, array $productData, ?string $accessTok
 
     // ========== RESERVATIONS ==========
 
-    public function getReservations(?string $accessToken = null): array
+    public function getAllReservations(?string $accessToken = null): array
     {
         $response = $this->client->request('GET', "{$this->baseUrl}/reservations", [
             'headers' => $this->getDefaultHeaders($accessToken),
@@ -223,21 +223,23 @@ public function updateProduct(string $id, array $productData, ?string $accessTok
         return $response->toArray();
     }
 
-    public function deleteReservation(string $id, ?string $accessToken = null): array
-    {
-        try {
-            $response = $this->client->request('DELETE', "{$this->baseUrl}/reservations?id=eq.$id", [
-                'headers' => array_merge($this->getDefaultHeaders($accessToken), [
-                    'Prefer' => 'return=minimal',
-                ]),
-            ]);
-            return $response->getStatusCode() === 204
-                ? ['success' => true]
-                : ['error' => $response->toArray(false)['message'] ?? 'Erreur lors de la suppression de la réservation.'];
-        } catch (\Throwable $e) {
-            return ['error' => $e->getMessage()];
-        }
+public function deleteReservation(string $id, ?string $accessToken = null): array
+{
+    try {
+        $response = $this->client->request('DELETE', "{$this->baseUrl}/reservations?id=eq.$id", [
+            'headers' => array_merge($this->getDefaultHeaders($accessToken), [
+                'Prefer' => 'return=minimal',
+            ]),
+        ]);
+
+        return $response->getStatusCode() === 204
+            ? ['success' => true]
+            : ['error' => $response->toArray(false)['message'] ?? 'Erreur lors de la suppression de la réservation.'];
+    } catch (\Throwable $e) {
+        return ['error' => $e->getMessage()];
     }
+}
+
 
     // ========== AUTHENTICATION ==========
 
