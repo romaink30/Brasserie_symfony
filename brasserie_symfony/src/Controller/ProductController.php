@@ -14,9 +14,20 @@ class ProductController extends AbstractController
     public function index(Request $request, SupabaseService $supabase): Response
     {
         $jwtToken = $request->getSession()->get('access_token');
+
+        if (!$jwtToken) {
+            return $this->render('product/index.html.twig', [
+                'products' => null,
+                'errorMessage' => 'Il faut être connecté pour accéder à cette page.'
+            ]);
+        }
+
         $products = $supabase->getProducts($jwtToken);
 
-        return $this->render('product/index.html.twig', ['products' => $products]);
+        return $this->render('product/index.html.twig', [
+            'products' => $products,
+            'errorMessage' => null,
+        ]);
     }
 
     #[Route('/products/new', name: 'product_new', methods: ['GET', 'POST'])]

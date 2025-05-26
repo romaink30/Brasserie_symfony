@@ -11,8 +11,17 @@ use Symfony\Component\Routing\Annotation\Route;
 class UserController extends AbstractController
 {
     #[Route('/users', name: 'user_index')]
-    public function index(SupabaseService $supabaseService): Response
+    public function index(Request $request, SupabaseService $supabaseService): Response
     {
+        $jwtToken = $request->getSession()->get('access_token');
+
+        if (!$jwtToken) {
+            return $this->render('user/index.html.twig', [
+                'users' => null,
+                'errorMessage' => 'Il faut être connecté pour accéder à cette page.'
+            ]);
+        }
+
         $users = $supabaseService->getAuthUsers();
 
         return $this->render('user/index.html.twig', [
@@ -23,6 +32,14 @@ class UserController extends AbstractController
     #[Route('/users/create', name: 'user_create', methods: ['GET', 'POST'])]
     public function create(Request $request, SupabaseService $supabaseService): Response
     {
+        $jwtToken = $request->getSession()->get('access_token');
+
+        if (!$jwtToken) {
+            return $this->render('user/create.html.twig', [
+                'errorMessage' => 'Il faut être connecté pour accéder à cette page.'
+            ]);
+        }
+
         if ($request->isMethod('POST')) {
             $email = $request->request->get('email');
             $password = $request->request->get('password');
@@ -44,6 +61,12 @@ class UserController extends AbstractController
     #[Route('/users/{id}/edit', name: 'user_edit', methods: ['GET', 'POST'])]
     public function edit(string $id, Request $request, SupabaseService $supabaseService): Response
     {
+        $jwtToken = $request->getSession()->get('access_token');
+
+        if (!$jwtToken) {
+            return new Response('Accès refusé. Veuillez vous connecter.', 403);
+        }
+
         $user = $supabaseService->getUserById($id);
         if (!$user) {
             throw $this->createNotFoundException('Utilisateur non trouvé.');
@@ -67,8 +90,14 @@ class UserController extends AbstractController
     }
 
     #[Route('/users/{id}/delete', name: 'user_delete', methods: ['POST'])]
-    public function delete(string $id, SupabaseService $supabaseService): Response
+    public function delete(string $id, Request $request, SupabaseService $supabaseService): Response
     {
+        $jwtToken = $request->getSession()->get('access_token');
+
+        if (!$jwtToken) {
+            return new Response('Accès refusé. Veuillez vous connecter.', 403);
+        }
+
         $result = $supabaseService->deleteUser($id);
 
         if (isset($result['error'])) {

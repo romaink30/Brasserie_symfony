@@ -13,7 +13,8 @@
             <tr>
                 <th>ID</th>
                 <th>Email</th>
-                <th>Status</th>
+                <th>Rôle</th>
+                <th>État</th>
                 <th>Date d'inscription</th>
             </tr>
         </thead>
@@ -22,7 +23,22 @@
                 <tr>
                     <td>{{ user.id }}</td>
                     <td>{{ user.email }}</td>
-                    <td><span class="badge bg-success">{{ user.role ?? 'Utilisateur' }}</span></td>
+                    <td>
+                        <span class="badge bg-primary">
+                            {% if user.raw_app_meta_data.role is defined and user.raw_app_meta_data.role == 'admin' %}
+                                Administrateur
+                            {% else %}
+                                Utilisateur
+                            {% endif %}
+                        </span>
+                    </td>
+                    <td>
+                        {% if user.email_confirmed_at is null %}
+                            <span class="badge bg-warning text-dark">En attente de validation</span>
+                        {% else %}
+                            <span class="badge bg-success">Confirmé</span>
+                        {% endif %}
+                    </td>
                     <td>{{ user.created_at | date('Y-m-d') }}</td>
                 </tr>
             {% else %}

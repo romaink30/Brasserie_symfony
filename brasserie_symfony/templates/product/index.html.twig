@@ -3,57 +3,51 @@
 {% block title %}Liste des produits{% endblock %}
 
 {% block body %}
-<h1>Liste des produits</h1>
+    <h1>Liste des produits</h1>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>Image</th>
-            <th>Nom</th>
-            <th>Description</th>
-            <th>Prix</th>
-            <th>Stock</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for product in products %}
-            <tr>
-                <td>
-                    {% if product.image %}
-                        <img src="{{ product.image }}" alt="{{ product.name }}" style="max-height: 100px;">
-                    {% endif %}
-                </td>
-                <td>{{ product.name }}</td>
-                <td>{{ product.description }}</td>
-                <td>{{ product.price }} €</td>
-                <td>{{ product.stock }}</td>
-                <td class="actions-column">
-                    <a href="{{ path('product_edit', {'id': product.id}) }}" class="btn btn-primary btn-sm">Modifier</a>
+    {% if errorMessage %}
+        <div class="alert alert-warning">{{ errorMessage }}</div>
+    {% else %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Image</th>
+                    <th>Nom</th>
+                    <th>Description</th>
+                    <th>Prix</th>
+                    <th>Stock</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for product in products %}
+                    <tr>
+                        <td>
+                            {% if product.image %}
+                                <img src="{{ product.image }}" alt="{{ product.name }}" style="max-height: 100px;">
+                            {% endif %}
+                        </td>
+                        <td>{{ product.name }}</td>
+                        <td>{{ product.description }}</td>
+                        <td>{{ product.price }} €</td>
+                        <td>{{ product.stock }}</td>
+                        <td class="actions-column">
+                            <a href="{{ path('product_edit', {'id': product.id}) }}" class="btn btn-primary btn-sm">Modifier</a>
 
-                    <form action="{{ path('product_delete', {'id': product.id}) }}" method="post" onsubmit="return confirm('Confirmer la suppression ?');">
-                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ product.id) }}">
-                        <button type="submit" class="btn btn-danger btn-sm">Supprimer</button>
-                    </form>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="5">Aucun produit trouvé.</td>
-            </tr>
-        {% endfor %}
-    </tbody>
-</table>
+                            <form action="{{ path('product_delete', {'id': product.id}) }}" method="post" onsubmit="return confirm('Confirmer la suppression ?');">
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ product.id) }}">
+                                <button type="submit" class="btn btn-danger btn-sm">Supprimer</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="6">Aucun produit trouvé.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
 
-<a href="{{ path('product_new') }}" class="btn btn-success">Ajouter un produit</a>
-
-{% endblock %}
-
-{% block stylesheets %}
-<style>
-    .actions-column {
-        display: flex;
-        align-items: center;
-    }
-</style>
+        <a href="{{ path('product_new') }}" class="btn btn-success">Ajouter un produit</a>
+    {% endif %}
 {% endblock %}
